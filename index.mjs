@@ -1,27 +1,28 @@
 import {loadStdlib} from '@reach-sh/stdlib';
 import * as backend from './build/index.main.mjs';
+
 const stdlib = loadStdlib(process.env);
 
 const startingBalance = stdlib.parseCurrency(100);
 
-const [ accAlice, accBob ] =
+const [ accRomulus, accRemus ] =
   await stdlib.newTestAccounts(2, startingBalance);
-console.log('Hello, Alice and Bob!');
+console.log('Hello, Romulus and Remus!');
 
 console.log('Launching...');
-const ctcAlice = accAlice.contract(backend);
-const ctcBob = accBob.contract(backend, ctcAlice.getInfo());
+const ctcRomulus = accRomulus.contract(backend);
+const ctcRemus = accRemus.contract(backend, ctcRomulus.getInfo());
 
 console.log('Starting backends...');
 await Promise.all([
-  backend.Alice(ctcAlice, {
+  backend.Romulus(ctcRomulus, {
     ...stdlib.hasRandom,
-    // implement Alice's interact object here
+    // implement Romulus's interact object here
   }),
-  backend.Bob(ctcBob, {
+  backend.Remus(ctcRemus, {
     ...stdlib.hasRandom,
-    // implement Bob's interact object here
+    // implement Remus's interact object here
   }),
 ]);
 
-console.log('Goodbye, Alice and Bob!');
+console.log('Goodbye, Romulus and Remus!');
